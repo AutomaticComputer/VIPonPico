@@ -1,6 +1,6 @@
 # VIP/Pico
 
-Raspberry Pi Pico を用いた、Cosmac VIP のエミュレータ。
+Raspberry Pi Pico を用いた、COSMAC VIP のエミュレータ。
 
 ![RoundUp](doc/roundup.jpg) ![Case](doc/case.jpg)
 
@@ -15,7 +15,7 @@ Raspberry Pi Pico を用いた、Cosmac VIP のエミュレータ。
 - ビデオ信号のタイミングはあまりきっちりと組み立てていない
 (タイマー割り込みが入ったらなるべく急いで処理する感じ)ため、
 ときどき画面が乱れます。リセットすると大体直ります。
-- ビデオ信号はノンインターレース 262 lines で、だいたい CDP1861C と似た
+- ビデオ信号はノンインターレース 262 lines で、だいたい CDP1861 と似た
 信号を出していると思います。
 手元の TV では 1 秒に一回くらい微妙に震えています。
 - テープレコーダーの入出力回路も、PC に USB オーディオ変換アダプタを通して
@@ -77,7 +77,7 @@ Tera Term のメニューから "ファイル→ファイル送信" で 512 バ�
 - RAM から PC への送信には、"d" を押した後、ログファイルを指定、
 バイナリにチェックを入れて、ターミナル上でキーを押します。
 (画面は乱れます。)
-- 転送モードを修了するためには、電源を切る必要があります。
+- 転送モードを終了するためには、電源を切る必要があります。
 "Operating System" を開始するには "C" を押したまま、
 RAM 上のプログラムを実行するには "0" から "B" までの数字を押したまま
 RESET/RUN スイッチを "RUN" に倒します。
@@ -96,7 +96,7 @@ COSMAC は 80 系や 68(65) 系と比べるとポピュラーになりません�
 ### リンク
 
 [COSMAC 研究会(かんぱぱさん)](https://kanpapa.com/cosmac/)
-皆さんご存じと思いますが、
+COSMAC に興味のある方は既にご存じと思いますが、
 現物の CDP1802 を用いたハードウェアなど、
 充実した情報があります。
 
@@ -105,7 +105,7 @@ COSMAC は、8080 や 6800 を基準にするとかなり変わったアーキ�
 こちらにその様子が書かれています。
 
 [Emma 02](https://www.emma02.hobby-site.com/)
-CDP1802 (等)を用いた様々なコンピューターのエミュレーターです。
+CDP1802 (等)を用いた様々なシステムのエミュレーターです。
 COSMAC の原型となった FRED なども試せます。
 
 
@@ -115,7 +115,7 @@ Hagley Museum の Digital Archives で、
 RCA から寄贈を受けた資料がたくさん公開されています。
 
 - [COSMAC VIP Instruction Manual](https://digital.hagley.org/LMSS_246409_873_11)
-"Operation System" や CHIP-8 に加え、20 本のプログラムも載っています。
+"Operating System" や CHIP-8 に加え、20 本のプログラムも載っています。
 - [COSMAC VIP Game Manual](https://digital.hagley.org/LMSS_246409_873_12)
 - [COSMAC VIP Game Manual II](https://digital.hagley.org/MSS_246477_MA1210_011)
 
