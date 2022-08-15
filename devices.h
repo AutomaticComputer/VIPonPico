@@ -10,17 +10,16 @@ void set_tone(uint16_t);
 extern uint sys_timer_slice, csync_timer_slice, video_dma_timer_slice, beep_timer_slice, 
     beep_timer_channel;
 
-
 #define CLOCK_1802_DIV 72 // 128 MHz/(1.777 MHz)
 #define CLOCKS_PER_CYCLE 8
 #define CYCLES_PER_LINE 14
 
-#define VIDEO_CHIP_DELAY 12
+#define VIDEO_CHIP_DELAY 20
 
 #define SYNC_PRESCALE (CLOCKS_1802_DIV)
 #define SYNC_PERIODS 262
 #define SYNC_HOR (14 * CLOCKS_PER_CYCLE) // one scan line
-#define SYNC_TOP (SYNC_HOR - 1) // half scan line
+#define SYNC_TOP (SYNC_HOR - 1) 
 #define SYNC_HS (CLOCKS_PER_CYCLE) // horizontal sync pulse
 #define SYNC_VS (SYNC_HOR - SYNC_HS) // latter half of vertical sync line
 #define SYNC_DISP (1u << 16)

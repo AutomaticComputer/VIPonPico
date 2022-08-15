@@ -10,12 +10,13 @@
 #include "data.h"
 #include "devices.h"
 
-// #define CYCLE_COUNT_DEF 
-#define CYCLE_COUNT_DEF int machine_cycles = 0;
-// #define CYCLE_COUNT_INIT
-#define CYCLE_COUNT_INIT machine_cycles = 0;
-// #define CYCLE_COUNT_ADD
-#define CYCLE_COUNT_ADD machine_cycles++;
+
+#define CYCLE_COUNT_DEF 
+// #define CYCLE_COUNT_DEF int machine_cycles = 0;  // for debugging
+#define CYCLE_COUNT_INIT
+// #define CYCLE_COUNT_INIT machine_cycles = 0;
+#define CYCLE_COUNT_ADD
+// #define CYCLE_COUNT_ADD machine_cycles++;
 
 #define RAM_SIZE 0x1000
 
@@ -37,33 +38,33 @@ enum cpu_state_enum {S0, S1, S2, S3, S1_2_0, S1_2_1, S1_2_NOP, S_IDL};
 cpu_state_enum cpu_state;
 
 enum cpu_instr_enum { 
-I_IDL, I_LDN, 
-I_INC, 
-I_DEC, 
-I_BR, I_NBR, I_BQ, I_BNQ, I_BZ, I_BNZ, I_BDF, I_BNF, I_B_EF, I_BN_EF, 
+    I_IDL, I_LDN, 
+    I_INC, 
+    I_DEC, 
+    I_BR, I_NBR, I_BQ, I_BNQ, I_BZ, I_BNZ, I_BDF, I_BNF, I_B_EF, I_BN_EF, 
 
-I_LDA, 
-I_STR, 
-I_IRX, 
-I_OUTN, I_INPN, 
+    I_LDA, 
+    I_STR, 
+    I_IRX, 
+    I_OUTN, I_INPN, 
 
-I_RET, 
-I_DIS, I_LDXA, I_STXD, 
-I_ADC, I_SDB, I_SHRC, I_SMB, I_SAV, I_MARK, I_REQ, I_SEQ, 
-I_ADCI, I_SDBI, I_SHLC, I_SMBI, 
+    I_RET, 
+    I_DIS, I_LDXA, I_STXD, 
+    I_ADC, I_SDB, I_SHRC, I_SMB, I_SAV, I_MARK, I_REQ, I_SEQ, 
+    I_ADCI, I_SDBI, I_SHLC, I_SMBI, 
 
-I_LBR, I_LBQ, I_LBNQ, I_LBZ, I_LBNZ, I_LBDF, I_LBNF, 
-I_NOP, I_LSKP, I_LSIE, I_LSQ, I_LSNQ, I_LSZ, I_LSNZ, I_LSNF, I_LSDF, 
+    I_LBR, I_LBQ, I_LBNQ, I_LBZ, I_LBNZ, I_LBDF, I_LBNF, 
+    I_NOP, I_LSKP, I_LSIE, I_LSQ, I_LSNQ, I_LSZ, I_LSNZ, I_LSNF, I_LSDF, 
 
-I_GLO, 
-I_GHI, 
-I_PLO, 
-I_PHI, 
-I_SEP, 
-I_SEX, 
+    I_GLO, 
+    I_GHI, 
+    I_PLO, 
+    I_PHI, 
+    I_SEP, 
+    I_SEX, 
 
-I_LDX, I_OR, I_AND, I_XOR, I_ADD, I_SD, I_SHR, I_SM, 
-I_LDI, I_ORI, I_ANI, I_XRI, I_ADI, I_SDI, I_SHL, I_SMI 
+    I_LDX, I_OR, I_AND, I_XOR, I_ADD, I_SD, I_SHR, I_SM, 
+    I_LDI, I_ORI, I_ANI, I_XRI, I_ADI, I_SDI, I_SHL, I_SMI 
 };
 
 cpu_instr_enum op_to_instr[] = {
@@ -80,7 +81,7 @@ cpu_instr_enum op_to_instr[] = {
     I_STR, I_STR, I_STR, I_STR, I_STR, I_STR, I_STR, I_STR, 
       I_STR, I_STR, I_STR, I_STR, I_STR, I_STR, I_STR, I_STR, 
     I_IRX, I_OUTN, I_OUTN, I_OUTN, I_OUTN, I_OUTN, I_OUTN, I_OUTN, 
-      I_IDL, // 68 ?? 
+      I_IDL, // undefined instruction 68 
       I_INPN, I_INPN, I_INPN, I_INPN, I_INPN, I_INPN, I_INPN, 
     I_RET, I_DIS, I_LDXA, I_STXD, I_ADC, I_SDB, I_SHRC, I_SMB, 
       I_SAV, I_MARK, I_REQ, I_SEQ, I_ADCI, I_SDBI, I_SHLC, I_SMBI, 
@@ -104,7 +105,6 @@ cpu_instr_enum op_to_instr[] = {
 
 cpu_instr_enum emu_instr;
 
-
 #define BYTES_PER_LINE 8
 #define DISPLAY_LINES 128
 
@@ -118,7 +118,7 @@ int main() {
 
     video_on = false;
 
-// hard reset
+    // hard reset
     for(int i = 0; i < 16; i++)
         registers[i] = 0;
     for(int i = 0; i < RAM_SIZE; i++) 
@@ -135,10 +135,10 @@ int main() {
     return 0;
 }
 
+
 bool video_irq;
 bool irq_ready;
 uint8_t key_code;
-
 
 void emu_reset() {
     int8_t mode;
@@ -218,7 +218,6 @@ void __not_in_flash_func(emu_loop)() {
             emu_start_clock();
         }
 
-
         WAIT_EMU_CLOCK
 
         switch(cpu_state) {
@@ -261,7 +260,7 @@ CYCLE_COUNT_ADD
                 video_irq = VIDEO_IRQ;
                 if (irq_ready) {
                     if (register_ie && video_irq) {
-/* go to S0? 
+/* should go to S0? 
                         // S3 cycle
                         irq_ready = false;
                         register_tt = ((register_x << 4) | register_p);
@@ -665,7 +664,7 @@ CYCLE_COUNT_ADD
                         }
                         register_d = buf;
                         tmp_addr = registers[register_x];
-                        if (IS_RAM) // RAM
+                        if (IS_RAM) 
                             memory[tmp_addr] = buf;
                         cpu_state = S0;
                         break;
@@ -868,13 +867,11 @@ CYCLE_COUNT_ADD
                     case I_SHLC: 
                         tmp_data = ((((uint16_t) register_d) << 1) | (uint16_t) register_df);
                         register_df = (tmp_data & 0x100) ? 1 : 0;
-//                        register_df = (tmp_data >> 8);
                         register_d = (tmp_data & 0xff);
                         cpu_state = S0;
                         break;
                     case I_SHL: 
                         register_df = (register_d & 0x80) ? 1 : 0;
-//                        register_df = ((register_d & 0x80) >> 7);
                         register_d = (register_d << 1);
                         cpu_state = S0;
                         break;
@@ -890,7 +887,7 @@ CYCLE_COUNT_ADD
                         if (IS_RAM) 
                             memory[tmp_addr] = register_tt;
                         register_x = register_p;
-                        registers[2]--; // ??: is it ok to post-decrement?
+                        registers[2]--; 
                         cpu_state = S0;
                         break;
                     case I_REQ: 
@@ -964,13 +961,14 @@ void download_data() {
     uint8_t buf[4096];
 
     stdio_init_all();
-    sleep_ms(500);
-    printf("\n\n\nData transfer mode.\n");
 
     while(1) {
         c = getchar();
         bytes = 0;
 
+        if (c == 'h') {
+            printf("  r: write 512 bytes of data for ROM\n  0 to 9, a, b: write 4096 bytes of data for RAM\n  d: send RAM contents to PC\n");
+        }
         if (c >= '0' && c <= '9') {
             bytes = 4096;
             sector = c - '0';
@@ -987,7 +985,7 @@ void download_data() {
             printf("Press a key to transfer RAM to PC.\n");
             getchar();
             for(int i = 0; i < 0x1000; i++) {
-                putchar(memory[i]);
+                putchar_raw(memory[i]);
             }
             continue;
         }
@@ -1008,6 +1006,7 @@ void download_data() {
             }
             printf("Writing %d bytes, offset %d...\n", bytes, base);
             sleep_ms(100);
+
 // From https://dominicmaas.co.nz/pages/pico-filesystem-littlefs
             uint32_t ints = save_and_disable_interrupts(); 
             flash_range_erase(base, 4096);

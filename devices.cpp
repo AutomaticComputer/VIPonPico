@@ -87,7 +87,6 @@ void init_devices() {
 
     gpio_init(IN_EF2_GPIO);
     gpio_set_dir(IN_EF2_GPIO, GPIO_IN);
-//    gpio_pull_up(IN_EF2_GPIO);
 
     gpio_init(BUTTON_GPIO);
     gpio_set_dir(BUTTON_GPIO, GPIO_IN);
@@ -121,8 +120,6 @@ void init_devices() {
     pwm_set_enabled(beep_timer_slice, false);
     pwm_set_irq_enabled(beep_timer_slice, false);
     pwm_set_clkdiv(beep_timer_slice, CLOCK_1802_DIV); // 1.777 MHz
-    pwm_set_wrap(beep_timer_slice, (0x35 << 6) - 1); // C5
-    pwm_set_chan_level(beep_timer_slice, beep_timer_channel, 0x35 << 5);
 
     // initialize PIO0, state machine 0
     video_out_pio = pio0;
@@ -208,7 +205,7 @@ void __not_in_flash_func(reset_timer_dma)() {
         pwm_set_output_polarity(csync_timer_slice, false, true); 
     pwm_set_chan_level(csync_timer_slice, csync_timer_channel, SYNC_HS);
 
-// Set up DMA for csync
+    // Set up DMA for csync
     csync_dma_channel = CSYNC_DMA_CHANNEL;
     d_c_conf = dma_channel_get_default_config(csync_dma_channel);
 
@@ -225,7 +222,7 @@ void __not_in_flash_func(reset_timer_dma)() {
     irq_set_exclusive_handler(DMA_IRQ_0, csync_dma_irq_handler);
     irq_set_enabled(DMA_IRQ_0, true); 
 
-// Set up timer/PWM for DMA (to 1861) timing. 
+    // Set up timer/PWM for DMA (to 1861) timing. 
     video_dma_timer_slice = pwm_gpio_to_slice_num(VIDEO_DMA_GPIO);
     video_dma_timer_channel = pwm_gpio_to_channel(VIDEO_DMA_GPIO);
 
@@ -268,10 +265,10 @@ extern bool video_on;
 
 void __not_in_flash_func(start_display)() {
     video_on = true;
-    pwm_set_wrap(csync_timer_slice, CLOCKS_PER_CYCLE * 3/2); // initial wait. 8 seems insufficient. 
+    pwm_set_wrap(csync_timer_slice, VIDEO_CHIP_DELAY - 1); // initial wait
     pwm_set_counter(csync_timer_slice, 0);
 
-    pwm_set_wrap(video_dma_timer_slice, CLOCKS_PER_CYCLE * 3/2); // initial wait
+    pwm_set_wrap(video_dma_timer_slice, VIDEO_CHIP_DELAY - 1); // initial wait
     pwm_set_counter(video_dma_timer_slice, 0);
 
     dma_channel_set_read_addr(csync_dma_channel, csync_cc, false);
@@ -347,3 +344,4 @@ void __not_in_flash_func(set_tone)(uint16_t t) {
     pwm_set_wrap(beep_timer_slice, ((t + 1) << 6) - 1); 
     pwm_set_chan_level(beep_timer_slice, beep_timer_channel, (t + 1) << 5);    
 }
+
