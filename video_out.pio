@@ -1,0 +1,6 @@
+.program video_out
+
+public entry_point:
+.wrap_target
+out pins, 1
+.wrap
