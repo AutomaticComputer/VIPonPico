@@ -264,6 +264,8 @@ void emu_stop_clock() {
 extern bool video_on;
 
 void __not_in_flash_func(start_display)() {
+    if (video_on)
+        return;
     video_on = true;
     pwm_set_wrap(csync_timer_slice, VIDEO_CHIP_DELAY - 1); // initial wait
     pwm_set_counter(csync_timer_slice, 0);
@@ -288,6 +290,8 @@ void __not_in_flash_func(start_display)() {
 }
 
 void __not_in_flash_func(stop_display)() {
+    if (!video_on)
+        return;
     video_on = false;
     pwm_set_irq_enabled(video_dma_timer_slice, false);
     pwm_set_enabled(csync_timer_slice, false);

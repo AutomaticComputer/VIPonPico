@@ -2,7 +2,13 @@
 
 Raspberry Pi Pico を用いた、COSMAC VIP のエミュレータ。
 
+New!! [COSMAC VIP 上のソフトウェア](doc/software.md)
+
+
 ![RoundUp](doc/roundup.jpg) ![Case](doc/case.jpg)
+
+
+
 
 ## 言い訳
 
@@ -129,6 +135,17 @@ VIP でのプログラミングの解説書という感じもあります。
 - [COSMAC Elf 関連の雑誌](http://www.cosmacelf.com/publications/newsletters/)
 VIP ではありませんが、COSMAC 関連。
 "Newsletters" に限らず、いろいろ情報があります。
+
+
+## COSMAC VIP 上のソフトウェア
+
+[COSMAC VIP 上のソフトウェア](doc/software.md)
+
+
+## 変更
+
+2022.8.27 "COSMAC VIP 上のソフトウェア" 追加。
+start_display(), stop_display() を修正。
 
 
 ## 謝辞
