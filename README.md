@@ -147,6 +147,9 @@ VIP ではありませんが、COSMAC 関連。
 2022.8.27 "COSMAC VIP 上のソフトウェア" 追加。
 start_display(), stop_display() を修正。
 
+2022.9.11 
+メモリーアドレスの変換(READ/WRITE による変更など)について修正。
+"COSMAC VIP 上のソフトウェア" に Color Kaleidoscope などについて追記。
 
 ## 謝辞
 

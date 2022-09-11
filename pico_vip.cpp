@@ -19,9 +19,14 @@
 // #define CYCLE_COUNT_ADD machine_cycles++;
 
 #define RAM_SIZE 0x1000
+#define RAM_ADDRESS_MASK 0xfff
 
-// #define IS_RAM (!(tmp_addr & 0x8000)) // 32K RAM
-#define IS_RAM ((tmp_addr < RAM_SIZE)) // 4K RAM
+#define WRITE_ADDR(x) (((x) & RAM_ADDRESS_MASK)) 
+    // needs change for a system with > 4K RAM or the color board
+#define HAS_RAM(x) (((x) < RAM_SIZE))  // always true on a 4K system
+
+#define GET_MEMORY(x) (memory[(modify_msb ? (((x) & 0x1ff) | 0x8000) : ((x) & RAM_ADDRESS_MASK))])
+
 
 uint16_t registers[16];
 uint8_t register_d;
@@ -198,8 +203,6 @@ void emu_reset() {
     }
 }
 
-
-#define GET_MEMORY(x) (memory[modify_msb ? ((x) | 0x8000) : (x)])
 
 void __not_in_flash_func(emu_loop)() {
     uint8_t buf;
@@ -663,8 +666,8 @@ CYCLE_COUNT_ADD
                                 break;
                         }
                         register_d = buf;
-                        tmp_addr = registers[register_x];
-                        if (IS_RAM) 
+                        tmp_addr = WRITE_ADDR(registers[register_x]);
+                        if (HAS_RAM(tmp_addr)) 
                             memory[tmp_addr] = buf;
                         cpu_state = S0;
                         break;
@@ -706,14 +709,14 @@ CYCLE_COUNT_ADD
                         cpu_state = S0;
                         break;
                     case I_STR:
-                        tmp_addr = registers[register_n];
-                        if (IS_RAM) // RAM
+                        tmp_addr = WRITE_ADDR(registers[register_n]);
+                        if (HAS_RAM(tmp_addr)) 
                             memory[tmp_addr] = register_d;
                         cpu_state = S0;
                         break;
                     case I_STXD:
-                        tmp_addr = registers[register_x];
-                        if (IS_RAM) // RAM
+                        tmp_addr = WRITE_ADDR(registers[register_x]);
+                        if (HAS_RAM(tmp_addr)) 
                             memory[tmp_addr] = register_d;
                         registers[register_x]--;
                         cpu_state = S0;
@@ -876,15 +879,15 @@ CYCLE_COUNT_ADD
                         cpu_state = S0;
                         break;
                     case I_SAV:
-                        tmp_addr = registers[register_x];
-                        if (IS_RAM) // RAM
+                        tmp_addr = WRITE_ADDR(registers[register_x]);
+                        if (HAS_RAM(tmp_addr)) 
                             memory[tmp_addr] = register_tt;
                         cpu_state = S0;
                         break;
                     case I_MARK:
                         register_tt = ((register_x << 4) | register_p);
-                        tmp_addr = registers[2];
-                        if (IS_RAM) 
+                        tmp_addr = WRITE_ADDR(registers[2]);
+                        if (HAS_RAM(tmp_addr)) 
                             memory[tmp_addr] = register_tt;
                         register_x = register_p;
                         registers[2]--; 

@@ -99,8 +99,44 @@ C を押しながらリセット、
 
 ### Color Kaleidoscope
 
+
+Color Board/Simple Sound Board/Expansion Keyboard のマニュアルの Appendix にあるものです。
+描画する点の色が乱数により変化します。
+
+Emma 02 で動かしました(自前のエミュレータはカラーに未対応なので)。
+VP590 Colour Board のチェックを入れておきます。
+RAM には Color Board/Simple Sound Board/Expansion Keyboard のマニュアルにある CHIP-8X を入れ、
+さらに Appendix の Color Kaleidoscope を打ちこみます。
+
+https://github.com/trapexit/chipce8/blob/master/docs/CHIP-8/Misc/VP580%2C%20VP585%2C%20VP590%2C%20VP595%20Instruction%20Manual%20Including%20CHIP-8X.pdf
+
+(許諾等について何も書かれていませんが…まあ読んだり自分で打ち込んだりする分には問題無いでしょう。)
+
+Chip-8X は Game manual II にも載っており、
+Emma 02 にも chip8x.ram というのがあるのですが、
+Game manual II では 0143, chip8x.ram では 0228 が違うようです。
+(このプログラムでは影響は無いようです。)
+```
+0143 4B
+0228 8C
+```
+
+(023E 番地は、Game manual II の p. 79 では D0 ですが C0 が正しいようです。
+
+![VIP Kaleidoscope color](screenshots/kaleidoscope_color.png)
+
+
+### Color Kaleidoscope modification
+
 VIPER vol. 2 issue 1 "An adaptation of Phil Sumner's improved VIP Kaleidoscope" (Bob Hayes)
-にあるものですが、試していません。	
+にあるもので、
+color Kaleidoscope に斜めの動き・描画の停止(F, 再開は 0)および 
+背景色の変更(F キーで止めている間に B キーを押す)が加わります。
+
+![VIP Kaleidoscope color mod](screenshots/kaleidoscope_color_mod.png)
+
+上の "Color Kaleidoscope" に、記事の通りの変更を加えます。
+
 
 
 ### Wacko Kaleidoscope
