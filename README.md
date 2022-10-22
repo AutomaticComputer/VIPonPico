@@ -151,6 +151,11 @@ start_display(), stop_display() を修正。
 メモリーアドレスの変換(READ/WRITE による変更など)について修正。
 "COSMAC VIP 上のソフトウェア" に Color Kaleidoscope などについて追記。
 
+2022.10.16 
+前回のメモリーアドレスの変換の修正がおかしかったので、再修正。
+"COSMAC VIP 上のソフトウェア" に、VIP Animal Race, VIP Round Up について追記。
+
+
 ## 謝辞
 
 ビデオ信号については、主に Arduino の [TVout](https://github.com/Avamander/arduino-tvout)

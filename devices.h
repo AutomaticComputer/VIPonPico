@@ -10,6 +10,9 @@ void set_tone(uint16_t);
 extern uint sys_timer_slice, csync_timer_slice, video_dma_timer_slice, beep_timer_slice, 
     beep_timer_channel;
 
+#define RAM_SIZE 0x1000
+#define RAM_ADDRESS_MASK 0x0FFF
+
 #define CLOCK_1802_DIV 72 // 128 MHz/(1.777 MHz)
 #define CLOCKS_PER_CYCLE 8
 #define CYCLES_PER_LINE 14

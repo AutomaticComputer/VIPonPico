@@ -157,6 +157,7 @@ extern uint8_t memory[];
 
 extern bool video_on;
 extern int machine_cycles;
+extern bool modify_msb;
 
 // IRQ from PWM for VIDEO dma signal
 void __not_in_flash_func(pwm_irq_handler)() {
@@ -164,6 +165,20 @@ void __not_in_flash_func(pwm_irq_handler)() {
 
 //    pio_sm_put(pio0, video_out_sm, machine_cycles);
 
+    uint16_t x = registers[0];
+    uint16_t addr = ((modify_msb || (x & 0x8000)) ? ((x & 0x01FF) | 0x8000) : (x & RAM_ADDRESS_MASK));
+    pio_sm_put(pio0, video_out_sm, 
+          (memory[addr++] << 24) 
+        | (memory[addr++] << 16) 
+        | (memory[addr++] << 8) 
+        | (memory[addr++]));
+    pio_sm_put(pio0, video_out_sm, 
+          (memory[addr++] << 24) 
+        | (memory[addr++] << 16) 
+        | (memory[addr++] << 8) 
+        | (memory[addr++]));
+    registers[0] += 8;
+/*
     pio_sm_put(pio0, video_out_sm, 
           (memory[registers[0]++] << 24) 
         | (memory[registers[0]++] << 16) 
@@ -174,6 +189,7 @@ void __not_in_flash_func(pwm_irq_handler)() {
         | (memory[registers[0]++] << 16) 
         | (memory[registers[0]++] << 8) 
         | (memory[registers[0]++]));
+*/
     pio_sm_put(pio0, video_out_sm, 0);
 }
 

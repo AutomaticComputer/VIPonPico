@@ -18,14 +18,11 @@
 #define CYCLE_COUNT_ADD
 // #define CYCLE_COUNT_ADD machine_cycles++;
 
-#define RAM_SIZE 0x1000
-#define RAM_ADDRESS_MASK 0xfff
-
 #define WRITE_ADDR(x) (((x) & RAM_ADDRESS_MASK)) 
     // needs change for a system with > 4K RAM or the color board
 #define HAS_RAM(x) (((x) < RAM_SIZE))  // always true on a 4K system
 
-#define GET_MEMORY(x) (memory[(modify_msb ? (((x) & 0x1ff) | 0x8000) : ((x) & RAM_ADDRESS_MASK))])
+#define GET_MEMORY(x) (memory[((modify_msb || ((x) & 0x8000)) ? (((x) & 0x01FF) | 0x8000) : ((x) & RAM_ADDRESS_MASK))])
 
 
 uint16_t registers[16];
