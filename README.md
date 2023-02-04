@@ -1,5 +1,7 @@
 # VIP/Pico
 
+[English](README_en.md)
+
 Raspberry Pi Pico を用いた、COSMAC VIP のエミュレータ。
 
 New!! [COSMAC VIP 上のソフトウェア](doc/software.md)
@@ -14,7 +16,7 @@ New!! [COSMAC VIP 上のソフトウェア](doc/software.md)
 
 まだいろいろ怪しいところがあります。
 特に、ハードウェア部分に関しては、接続先を壊さないとは限りません。
-全体的に、「手元では動いている」というレベルのものです。
+「手元では動いている」ということはできます…
 
 ### 言い訳の詳細
 
@@ -55,10 +57,14 @@ Audacity で録音。こんな感じ: ![録音](doc/screenshot_audacity.png)
 ## ソフトウェア
 
 build/pico_vip.uf2 を Raspberry Pi Pico に転送します。
-"VIP/Pico" と表示するだけの、
-最低限の動作確認用 ROM を入れてあります。
+最低限の動作確認用 ROM と、
+[CosmacDriving](https://github.com/AutomaticComputer/CosmacDriving)を入れてあります。
 
-RAM は 4KB としており(増やすのは簡単ですが)、
+"0" を押しながら起動(またはリセット)するとCosmacDriving が読み込まれ、実行されます。
+"C" を押しながら起動するか、または起動時に 0000 番地に 0 以外のデータが書き込まれていなければ、
+"VIP/Pico" と表示するだけのプログラムが実行されます。
+
+RAM は 32KB としており、
 Simple Sound Board 相当の音声発生ができます。
 
 
@@ -154,6 +160,9 @@ start_display(), stop_display() を修正。
 2022.10.16 
 前回のメモリーアドレスの変換の修正がおかしかったので、再修正。
 "COSMAC VIP 上のソフトウェア" に、VIP Animal Race, VIP Round Up について追記。
+
+2022.12.30
+サンプルプログラム(CosmacDriving)を追加。
 
 
 ## 謝辞
